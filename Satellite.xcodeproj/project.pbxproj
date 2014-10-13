@@ -6,6 +6,21 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		92478EAE19EC3A94001050E7 /* Kexts */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 92478EB319EC3A94001050E7 /* Build configuration list for PBXAggregateTarget "Kexts" */;
+			buildPhases = (
+			);
+			dependencies = (
+				92478EB719EC3AA6001050E7 /* PBXTargetDependency */,
+				92478EB519EC3AA3001050E7 /* PBXTargetDependency */,
+			);
+			name = Kexts;
+			productName = Kexts;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXContainerItemProxy section */
 		92478E9019EC39CE001050E7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -14,26 +29,26 @@
 			remoteGlobalIDString = 32D94FD00562CBF700B6AF17;
 			remoteInfo = IOProxyVideoCard;
 		};
-		92478E9219EC39CE001050E7 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 92478E8919EC39CE001050E7 /* IOProxyVideoFamily.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = BA193BD00B30B374005DA951;
-			remoteInfo = IOProxyFramebuffer;
-		};
-		92478E9419EC39CE001050E7 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 92478E8919EC39CE001050E7 /* IOProxyVideoFamily.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = BA5A01810B30DDF7000D19F9;
-			remoteInfo = ProxyControl;
-		};
 		92478EAA19EC39E7001050E7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 92478EA619EC39E7001050E7 /* IOProxyFramebuffer.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 32D94FD00562CBF700B6AF17;
 			remoteInfo = IOProxyFramebuffer;
+		};
+		92478EB419EC3AA3001050E7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 92478EA619EC39E7001050E7 /* IOProxyFramebuffer.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 32D94FC30562CBF700B6AF17;
+			remoteInfo = IOProxyFramebuffer;
+		};
+		92478EB619EC3AA6001050E7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 92478E8919EC39CE001050E7 /* IOProxyVideoFamily.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 32D94FC30562CBF700B6AF17;
+			remoteInfo = IOProxyVideoCard;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -55,8 +70,6 @@
 			isa = PBXGroup;
 			children = (
 				92478E9119EC39CE001050E7 /* IOProxyVideoCard.kext */,
-				92478E9319EC39CE001050E7 /* IOProxyFramebuffer.kext */,
-				92478E9519EC39CE001050E7 /* ProxyControl.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -98,6 +111,7 @@
 			);
 			projectRoot = "";
 			targets = (
+				92478EAE19EC3A94001050E7 /* Kexts */,
 			);
 		};
 /* End PBXProject section */
@@ -110,20 +124,6 @@
 			remoteRef = 92478E9019EC39CE001050E7 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		92478E9319EC39CE001050E7 /* IOProxyFramebuffer.kext */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = IOProxyFramebuffer.kext;
-			remoteRef = 92478E9219EC39CE001050E7 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		92478E9519EC39CE001050E7 /* ProxyControl.app */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = ProxyControl.app;
-			remoteRef = 92478E9419EC39CE001050E7 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		92478EAB19EC39E7001050E7 /* IOProxyFramebuffer.kext */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
@@ -132,6 +132,19 @@
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
+
+/* Begin PBXTargetDependency section */
+		92478EB519EC3AA3001050E7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = IOProxyFramebuffer;
+			targetProxy = 92478EB419EC3AA3001050E7 /* PBXContainerItemProxy */;
+		};
+		92478EB719EC3AA6001050E7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = IOProxyVideoCard;
+			targetProxy = 92478EB619EC3AA6001050E7 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		92478E7219EC38C4001050E7 /* Debug */ = {
@@ -146,6 +159,20 @@
 			};
 			name = Release;
 		};
+		92478EAF19EC3A94001050E7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		92478EB019EC3A94001050E7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -157,6 +184,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		92478EB319EC3A94001050E7 /* Build configuration list for PBXAggregateTarget "Kexts" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				92478EAF19EC3A94001050E7 /* Debug */,
+				92478EB019EC3A94001050E7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};
