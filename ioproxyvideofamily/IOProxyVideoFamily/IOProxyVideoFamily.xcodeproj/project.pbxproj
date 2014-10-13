@@ -75,7 +75,7 @@
 		32D94FD00562CBF700B6AF17 /* IOProxyVideoCard.kext */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IOProxyVideoCard.kext; sourceTree = BUILT_PRODUCTS_DIR; };
 		8DA8362C06AD9B9200E5AC22 /* Kernel.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Kernel.framework; path = /System/Library/Frameworks/Kernel.framework; sourceTree = "<absolute>"; };
 		BA193BD00B30B374005DA951 /* IOProxyFramebuffer.kext */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IOProxyFramebuffer.kext; sourceTree = BUILT_PRODUCTS_DIR; };
-		BA193BDF0B30B52A005DA951 /* Framebuffer-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "Framebuffer-Info.plist"; sourceTree = "<group>"; };
+		BA193BDF0B30B52A005DA951 /* Framebuffer-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Framebuffer-Info.plist"; sourceTree = "<group>"; };
 		BA193BE10B30B550005DA951 /* IOProxyFramebuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOProxyFramebuffer.h; sourceTree = "<group>"; };
 		BA193BE20B30B550005DA951 /* IOProxyFramebuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IOProxyFramebuffer.cpp; sourceTree = "<group>"; };
 		BA5A01810B30DDF7000D19F9 /* ProxyControl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ProxyControl.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -86,7 +86,7 @@
 		BA5A049E0B30DFC1000D19F9 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 		BA5A049F0B30DFC1000D19F9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		BA5A04A00B30DFC1000D19F9 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
-		BA5A08570B30E0B0000D19F9 /* VideoCard-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "VideoCard-Info.plist"; sourceTree = "<group>"; };
+		BA5A08570B30E0B0000D19F9 /* VideoCard-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "VideoCard-Info.plist"; sourceTree = "<group>"; };
 		BA5A08580B30E0B0000D19F9 /* IOProxyVideoCard.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IOProxyVideoCard.cpp; sourceTree = "<group>"; };
 		BA5A08590B30E0B0000D19F9 /* IOProxyVideoCard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOProxyVideoCard.h; sourceTree = "<group>"; };
 		BA5A08670B30E18C000D19F9 /* IOProxyVideoCardUserClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOProxyVideoCardUserClient.h; sourceTree = "<group>"; };
@@ -96,7 +96,7 @@
 		BAA657A10C9A6E1E0023D201 /* English */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		BAA657A30C9A6E1E0023D201 /* English */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = English; path = English.lproj/jim.icns; sourceTree = "<group>"; };
 		BAA657A50C9A6E1E0023D201 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MainMenu.nib; sourceTree = "<group>"; };
-		BAA657A60C9A6E1E0023D201 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; path = Info.plist; sourceTree = "<group>"; };
+		BAA657A60C9A6E1E0023D201 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BAA657AB0C9A6E280023D201 /* AppController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = AppController.h; sourceTree = "<group>"; };
 		BABD858F0B349DF9005C0285 /* EDID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EDID.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -301,10 +301,18 @@
 /* Begin PBXProject section */
 		089C1669FE841209C02AAC07 /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+			};
 			buildConfigurationList = 1DEB91DD08733DB10010E9CD /* Build configuration list for PBXProject "IOProxyVideoFamily" */;
+			compatibilityVersion = "Xcode 2.4";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
+			knownRegions = (
+				en,
+			);
 			mainGroup = 089C166AFE841209C02AAC07 /* IODummyVideoCard */;
 			projectDirPath = "";
+			projectRoot = "";
 			targets = (
 				32D94FC30562CBF700B6AF17 /* IOProxyVideoCard */,
 				BA193BC40B30B374005DA951 /* IOProxyFramebuffer */,

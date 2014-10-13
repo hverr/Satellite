@@ -1,0 +1,164 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXContainerItemProxy section */
+		92478E9019EC39CE001050E7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 92478E8919EC39CE001050E7 /* IOProxyVideoFamily.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 32D94FD00562CBF700B6AF17;
+			remoteInfo = IOProxyVideoCard;
+		};
+		92478E9219EC39CE001050E7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 92478E8919EC39CE001050E7 /* IOProxyVideoFamily.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = BA193BD00B30B374005DA951;
+			remoteInfo = IOProxyFramebuffer;
+		};
+		92478E9419EC39CE001050E7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 92478E8919EC39CE001050E7 /* IOProxyVideoFamily.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = BA5A01810B30DDF7000D19F9;
+			remoteInfo = ProxyControl;
+		};
+		92478EAA19EC39E7001050E7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 92478EA619EC39E7001050E7 /* IOProxyFramebuffer.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 32D94FD00562CBF700B6AF17;
+			remoteInfo = IOProxyFramebuffer;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		92478E8919EC39CE001050E7 /* IOProxyVideoFamily.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = IOProxyVideoFamily.xcodeproj; path = ioproxyvideofamily/IOProxyVideoFamily/IOProxyVideoFamily.xcodeproj; sourceTree = "<group>"; };
+		92478EA619EC39E7001050E7 /* IOProxyFramebuffer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = IOProxyFramebuffer.xcodeproj; path = ioproxyvideofamily/IOProxyFramebuffer/IOProxyFramebuffer.xcodeproj; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		92478E6D19EC38C4001050E7 = {
+			isa = PBXGroup;
+			children = (
+				92478EA619EC39E7001050E7 /* IOProxyFramebuffer.xcodeproj */,
+				92478E8919EC39CE001050E7 /* IOProxyVideoFamily.xcodeproj */,
+			);
+			sourceTree = "<group>";
+		};
+		92478E8A19EC39CE001050E7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				92478E9119EC39CE001050E7 /* IOProxyVideoCard.kext */,
+				92478E9319EC39CE001050E7 /* IOProxyFramebuffer.kext */,
+				92478E9519EC39CE001050E7 /* ProxyControl.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		92478EA719EC39E7001050E7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				92478EAB19EC39E7001050E7 /* IOProxyFramebuffer.kext */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXProject section */
+		92478E6E19EC38C4001050E7 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0510;
+			};
+			buildConfigurationList = 92478E7119EC38C4001050E7 /* Build configuration list for PBXProject "Satellite" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 92478E6D19EC38C4001050E7;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 92478EA719EC39E7001050E7 /* Products */;
+					ProjectRef = 92478EA619EC39E7001050E7 /* IOProxyFramebuffer.xcodeproj */;
+				},
+				{
+					ProductGroup = 92478E8A19EC39CE001050E7 /* Products */;
+					ProjectRef = 92478E8919EC39CE001050E7 /* IOProxyVideoFamily.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		92478E9119EC39CE001050E7 /* IOProxyVideoCard.kext */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = IOProxyVideoCard.kext;
+			remoteRef = 92478E9019EC39CE001050E7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		92478E9319EC39CE001050E7 /* IOProxyFramebuffer.kext */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = IOProxyFramebuffer.kext;
+			remoteRef = 92478E9219EC39CE001050E7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		92478E9519EC39CE001050E7 /* ProxyControl.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = ProxyControl.app;
+			remoteRef = 92478E9419EC39CE001050E7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		92478EAB19EC39E7001050E7 /* IOProxyFramebuffer.kext */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = IOProxyFramebuffer.kext;
+			remoteRef = 92478EAA19EC39E7001050E7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin XCBuildConfiguration section */
+		92478E7219EC38C4001050E7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		92478E7319EC38C4001050E7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		92478E7119EC38C4001050E7 /* Build configuration list for PBXProject "Satellite" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				92478E7219EC38C4001050E7 /* Debug */,
+				92478E7319EC38C4001050E7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 92478E6E19EC38C4001050E7 /* Project object */;
+}
