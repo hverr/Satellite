@@ -134,7 +134,16 @@ void _StreamerDisplayStreamFrameAvailable(Streamer *streamer,
         _StreamerUpdateInternalFramebuffer(streamer,
                                            rectangles[i],
                                            frameSurface);
+        break;
     }
+
+    if(rfbIsActive(streamer->streams.screenInfo)) {
+        rfbProcessEvents(streamer->streams.screenInfo,
+                         streamer->streams.screenInfo->deferUpdateTime*1000);
+    }
+
+    /* We always do a full sync => cpu load */
+    usleep(0.1*1.e6);
 }
 
 void _StreamerUpdateInternalFramebuffer(Streamer *streamer,
@@ -192,20 +201,11 @@ void _StreamerUpdateInternalFramebuffer(Streamer *streamer,
     CGImageRelease(image);
 
     /* Mark dirty */
-    if(!rfbIsActive(streamer->streams.screenInfo)) {
-        return;
-    }
-
     rfbMarkRectAsModified(streamer->streams.screenInfo,
                           (int)srcRect.origin.x,
                           (int)srcRect.origin.y,
                           (int)srcRect.origin.x + (int)srcRect.size.width,
                           (int)srcRect.origin.y + (int)srcRect.size.height);
-    rfbProcessEvents(streamer->streams.screenInfo,
-                     streamer->streams.screenInfo->deferUpdateTime*1000);
-
-    /* We always do a full sync => cpu load */
-    usleep(0.1*1.e6);
 }
 
 void _StreamerPutBitmap(Streamer *streamer, CGRect srcRect,
