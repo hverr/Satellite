@@ -419,29 +419,28 @@ com_doequalsglory_driver_IOProxyFramebuffer::isConsoleDevice(void) {
 	@param		<#name#> <#description#>
 	@result		<#description#>
 --------------------------------+---------------+---------------------------- */
-//IOReturn
-//com_doequalsglory_driver_IOProxyFramebuffer::getTimingInfoForDisplayMode(IODisplayModeID displayMode, IOTimingInformation *info) {
-//#if defined(DEBUG_CALLS)
-//	IOLog(kDebugStr "getTimingInfoForDisplayMode(displayMode: %d)\n", displayMode);
-//#endif
-//
-//	if (info == NULL) {
-//		return kIOReturnBadArgument;
-//	}
-//	
-//	//switch (displayMode) {
-//		//case kDisplayMode:
-//	//	default:
-////			info->appleTimingID = gProxyDisplayModes[displayMode].appleTimingID;
-//	//info->appleTimingID = kIOTimingIDApple_FixedRateLCD;
-//	//info->appleTimingID = kIOTimingIDVESA_1280x1024_60hz;
-//	info->appleTimingID = kIOTimingIDInvalid;
-//	info->flags = 0;
-//	//		break;
-//	//}
-//
-//	return kIOReturnSuccess;
-//}
+IOReturn
+com_doequalsglory_driver_IOProxyFramebuffer::getTimingInfoForDisplayMode(IODisplayModeID displayMode, IOTimingInformation *info) {
+#if defined(DEBUG_CALLS)
+	IOLog(kDebugStr "getTimingInfoForDisplayMode(displayMode: %d)\n", displayMode);
+#endif
+
+	if (info == NULL) {
+		return kIOReturnBadArgument;
+	}
+
+	switch (displayMode) {
+        //case kDisplayMode:
+        default:
+			//info->appleTimingID = gProxyDisplayModes[displayMode].appleTimingID;
+            //info->appleTimingID = kIOTimingIDApple_FixedRateLCD;
+            info->appleTimingID = kIOTimingIDVESA_1280x1024_60hz;
+            //info->appleTimingID = kIOTimingIDInvalid;
+            info->flags = 0;
+            break;
+    }
+	return kIOReturnSuccess;
+}
 
 
 IOReturn
