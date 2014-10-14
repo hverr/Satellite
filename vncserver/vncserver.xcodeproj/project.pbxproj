@@ -11,6 +11,11 @@
 		9216371019ED525F007A45D7 /* vncserver.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9216370F19ED525F007A45D7 /* vncserver.1 */; };
 		9216371719ED527B007A45D7 /* libvncserver.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9216371619ED527B007A45D7 /* libvncserver.a */; };
 		9216372319ED5346007A45D7 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9216372219ED5346007A45D7 /* libz.dylib */; };
+		9216372519ED56C5007A45D7 /* streamer.c in Sources */ = {isa = PBXBuildFile; fileRef = 9216372419ED56C5007A45D7 /* streamer.c */; };
+		9216372A19ED584D007A45D7 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9216372919ED584D007A45D7 /* ApplicationServices.framework */; };
+		9216372C19ED5B47007A45D7 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9216372B19ED5B47007A45D7 /* CoreFoundation.framework */; };
+		9216372E19ED5DAA007A45D7 /* IOSurface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9216372D19ED5DAA007A45D7 /* IOSurface.framework */; };
+		92AFA6A919ED8D7A00A759C5 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92AFA6A819ED8D7A00A759C5 /* OpenGL.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -40,6 +45,12 @@
 		9216371F19ED52D2007A45D7 /* rfbproto.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = rfbproto.h; sourceTree = "<group>"; };
 		9216372019ED52D2007A45D7 /* rfbregion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = rfbregion.h; sourceTree = "<group>"; };
 		9216372219ED5346007A45D7 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		9216372419ED56C5007A45D7 /* streamer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = streamer.c; sourceTree = "<group>"; };
+		9216372619ED56CD007A45D7 /* streamer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = streamer.h; sourceTree = "<group>"; };
+		9216372919ED584D007A45D7 /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = System/Library/Frameworks/ApplicationServices.framework; sourceTree = SDKROOT; };
+		9216372B19ED5B47007A45D7 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		9216372D19ED5DAA007A45D7 /* IOSurface.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOSurface.framework; path = System/Library/Frameworks/IOSurface.framework; sourceTree = SDKROOT; };
+		92AFA6A819ED8D7A00A759C5 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,6 +58,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				92AFA6A919ED8D7A00A759C5 /* OpenGL.framework in Frameworks */,
+				9216372E19ED5DAA007A45D7 /* IOSurface.framework in Frameworks */,
+				9216372C19ED5B47007A45D7 /* CoreFoundation.framework in Frameworks */,
+				9216372A19ED584D007A45D7 /* ApplicationServices.framework in Frameworks */,
 				9216372319ED5346007A45D7 /* libz.dylib in Frameworks */,
 				9216371719ED527B007A45D7 /* libvncserver.a in Frameworks */,
 			);
@@ -77,6 +92,8 @@
 			isa = PBXGroup;
 			children = (
 				9216370D19ED525F007A45D7 /* main.c */,
+				9216372619ED56CD007A45D7 /* streamer.h */,
+				9216372419ED56C5007A45D7 /* streamer.c */,
 				9216370F19ED525F007A45D7 /* vncserver.1 */,
 			);
 			path = vncserver;
@@ -100,6 +117,10 @@
 		9216372119ED5335007A45D7 /* libraries */ = {
 			isa = PBXGroup;
 			children = (
+				92AFA6A819ED8D7A00A759C5 /* OpenGL.framework */,
+				9216372B19ED5B47007A45D7 /* CoreFoundation.framework */,
+				9216372919ED584D007A45D7 /* ApplicationServices.framework */,
+				9216372D19ED5DAA007A45D7 /* IOSurface.framework */,
 				9216372219ED5346007A45D7 /* libz.dylib */,
 				9216371619ED527B007A45D7 /* libvncserver.a */,
 			);
@@ -157,6 +178,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9216372519ED56C5007A45D7 /* streamer.c in Sources */,
 				9216370E19ED525F007A45D7 /* main.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -285,6 +307,7 @@
 				9216371519ED525F007A45D7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
