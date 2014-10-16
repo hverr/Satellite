@@ -9,8 +9,8 @@
 #include "streamer.h"
 
 #include <IOSurface/IOSurface.h>
-#include <OpenGL/OpenGL.h>
-#include <OpenGl/gl.h>
+
+#import <AVFoundation/AVFoundation.h>
 
 #define BPP ((size_t)4)
 #define BPR(ppr) (BPP * (size_t)ppr)
