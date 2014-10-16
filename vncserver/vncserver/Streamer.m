@@ -179,18 +179,19 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 
     CVPixelBufferUnlockBaseAddress(imageBuffer, 0);
 
+    /* FPS */
+    CFAbsoluteTime now;
+    self.stream->fps.counter++;
+    if(self.stream->fps.counter == 9) {
+        now = CFAbsoluteTimeGetCurrent();
+
+        printf("fps: %f\n", 1./(now - self.stream->fps.time)*(double)self.stream->fps.counter);
+        self.stream->fps.time = CFAbsoluteTimeGetCurrent();
+        self.stream->fps.counter = 0;
+    }
+
+
     if(rfbIsActive(self.stream->server)) {
-        CFAbsoluteTime now;
-
-        self.stream->fps.counter++;
-        if(self.stream->fps.counter == 9) {
-            now = CFAbsoluteTimeGetCurrent();
-
-            printf("fps: %f\n", 1./(now - self.stream->fps.time)*(double)self.stream->fps.counter);
-            self.stream->fps.time = CFAbsoluteTimeGetCurrent();
-            self.stream->fps.counter = 0;
-        }
-
         rfbProcessEvents(self.stream->server,
                          self.stream->server->deferUpdateTime * 1000);
     }
