@@ -9,6 +9,19 @@
 #import "Streamer.h"
 
 #import <CoreGraphics/CoreGraphics.h>
+#import <rfb/rfb.h>
+
+typedef struct {
+    rfbScreenInfoPtr server;
+    struct {
+        char **buffer;
+        size_t size;
+    } framebuffer;
+    struct {
+        int counter;
+        CFAbsoluteTime time;
+    } fps;
+} StreamerVNCStream;
 
 #pragma mark -
 @interface Streamer () <AVCaptureVideoDataOutputSampleBufferDelegate>
@@ -19,6 +32,7 @@
 @property (nonatomic, assign) dispatch_queue_t captureQueue;
 @property (nonatomic, retain) AVCaptureSession *captureSession;
 @property (nonatomic, retain) AVCaptureVideoDataOutput *captureOutput;
+@property (nonatomic, assign) StreamerVNCStream *stream;
 @end
 
 #pragma mark -
@@ -28,6 +42,9 @@
     self = [super init];
     if(self != nil) {
         self.displayID = displayID;
+
+        self.stream = malloc(sizeof(*(self.stream)));
+        memset(self.stream, 0, sizeof(*(self.stream)));
     }
     return self;
 }
@@ -77,6 +94,7 @@
     self.captureSession = session;
     self.captureOutput = output;
 
+    [self setupVNCServer];
     [session startRunning];
 
     return YES;
@@ -97,6 +115,48 @@
     self.captureQueue = dispatch_queue_create("streamer.capture", NULL);
 }
 
+- (void)setupVNCServer {
+    CGSize size;
+    int argc;
+
+    [self destroyVNCServer];
+
+    size = CGDisplayBounds(self.displayID).size;
+
+    argc = 0;
+    self.stream->server = rfbGetScreen(&argc, NULL,
+                                       (int)size.width, (int)size.height,
+                                       8, 3, 4);
+    self.stream->framebuffer.buffer = &(self.stream->server->frameBuffer);
+    self.stream->framebuffer.size = (size_t)size.width*(size_t)size.height*4;
+    *self.stream->framebuffer.buffer = malloc(self.stream->framebuffer.size);
+
+    rfbInitServer(self.stream->server);
+}
+
+- (void)destroyVNCServer {
+    if(self.stream->server) {
+        free(*self.stream->framebuffer.buffer);
+        rfbScreenCleanup(self.stream->server);
+    }
+
+    memset(self.stream, 0, sizeof(*(self.stream)));
+}
+
+- (void)updateVNCFramebuffer:(char *)bgra32 {
+    size_t i;
+    char *dest;
+
+    dest = *self.stream->framebuffer.buffer;
+
+    for(i = 0; i < self.stream->framebuffer.size; i += (size_t)4) {
+        dest[i] = bgra32[i+2];
+        dest[i+1] = bgra32[i+1];
+        dest[i+2] = bgra32[i];
+        dest[i+3] = 255;
+    }
+}
+
 #pragma mark Output Delegate
 - (void)captureOutput:(AVCaptureOutput *)captureOutput
 didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
@@ -114,6 +174,28 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     height = CVPixelBufferGetHeight(imageBuffer);
     base = CVPixelBufferGetBaseAddress(imageBuffer);
 
+    [self updateVNCFramebuffer:(char *)base];
+    rfbMarkRectAsModified(self.stream->server, 0, 0, (int)width, (int)height);
+
+    CVPixelBufferUnlockBaseAddress(imageBuffer, 0);
+
+    if(rfbIsActive(self.stream->server)) {
+        CFAbsoluteTime now;
+
+        self.stream->fps.counter++;
+        if(self.stream->fps.counter == 9) {
+            now = CFAbsoluteTimeGetCurrent();
+
+            printf("fps: %f\n", 1./(now - self.stream->fps.time)*(double)self.stream->fps.counter);
+            self.stream->fps.time = CFAbsoluteTimeGetCurrent();
+            self.stream->fps.counter = 0;
+        }
+
+        rfbProcessEvents(self.stream->server,
+                         self.stream->server->deferUpdateTime * 1000);
+    }
+
+    /*
     CGColorSpaceRef colorSpace;
     CGContextRef context;
     CGImageRef image;
@@ -139,5 +221,6 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     CGImageDestinationAddImage(dest, image, NULL);
     CGImageDestinationFinalize(dest);
     CFRelease(dest);
+     */
 }
 @end
