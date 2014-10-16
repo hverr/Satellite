@@ -17,6 +17,7 @@
 		92AFA6A919ED8D7A00A759C5 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92AFA6A819ED8D7A00A759C5 /* OpenGL.framework */; };
 		92B43C2D19EFD67F007D43B7 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92B43C2C19EFD67F007D43B7 /* AVFoundation.framework */; };
 		92B43C2F19EFD886007D43B7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92B43C2E19EFD886007D43B7 /* Foundation.framework */; };
+		92B43C3219EFDD11007D43B7 /* Streamer.m in Sources */ = {isa = PBXBuildFile; fileRef = 92B43C3119EFDD11007D43B7 /* Streamer.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -52,6 +53,8 @@
 		92AFA6A819ED8D7A00A759C5 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		92B43C2C19EFD67F007D43B7 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		92B43C2E19EFD886007D43B7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		92B43C3019EFDD11007D43B7 /* Streamer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Streamer.h; sourceTree = "<group>"; };
+		92B43C3119EFDD11007D43B7 /* Streamer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Streamer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +99,8 @@
 			children = (
 				9216370D19ED525F007A45D7 /* main.m */,
 				9216370F19ED525F007A45D7 /* vncserver.1 */,
+				92B43C3019EFDD11007D43B7 /* Streamer.h */,
+				92B43C3119EFDD11007D43B7 /* Streamer.m */,
 			);
 			path = vncserver;
 			sourceTree = "<group>";
@@ -181,6 +186,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				92B43C3219EFDD11007D43B7 /* Streamer.m in Sources */,
 				9216370E19ED525F007A45D7 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

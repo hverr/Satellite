@@ -9,9 +9,17 @@
 
 #import <Foundation/Foundation.h>
 
+#import "Streamer.h"
+
 int main(int argc, const char **argv) {
     @autoreleasepool {
-        NSLog(@"Hello World");
+        Streamer *streamer;
+
+        streamer = [[Streamer alloc] initWithDisplayID:kCGDirectMainDisplay];
+
+        [streamer startStreaming:NULL];
+
+        [[NSRunLoop mainRunLoop] run];
     }
     return 0;
 }
