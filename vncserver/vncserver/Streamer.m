@@ -16,6 +16,7 @@ typedef struct {
     struct {
         char **buffer;
         size_t size;
+        size_t bytesPerRow;
     } framebuffer;
     struct {
         int counter;
@@ -63,17 +64,18 @@ typedef struct {
                 IOSurfaceRef frameSurface,
                 CGDisplayStreamUpdateRef updateRef)
     {
-        size_t count;
+        size_t count, i;
         const CGRect *dirtyRects;
         CGDisplayStreamUpdateRectType mode;
         CVPixelBufferRef pixelBuffer;
+        void *base;
         CVReturn rv;
 
         if(status != kCGDisplayStreamFrameStatusFrameComplete) {
             return;
         }
 
-        mode = kCGDisplayStreamUpdateReducedDirtyRects;
+        mode = kCGDisplayStreamUpdateDirtyRects;
         dirtyRects = CGDisplayStreamUpdateGetRects(updateRef, mode, &count);
 
         rv = CVPixelBufferCreateWithIOSurface(NULL, frameSurface,
@@ -85,17 +87,27 @@ typedef struct {
 
         CVPixelBufferLockBaseAddress(pixelBuffer, 0);
 
-        memcpy(*self.stream->framebuffer.buffer,
-               CVPixelBufferGetBaseAddress(pixelBuffer),
-               self.stream->framebuffer.size);
+        base = CVPixelBufferGetBaseAddress(pixelBuffer);
+        for(i = 0; i < count; i++) {
+            int x1, y1, x2, y2;
 
-        rfbMarkRectAsModified(self.stream->server,
-                              0, 0, (int)size.width, (int)size.height);
+            x1 = (int)dirtyRects[i].origin.x;
+            y1 = (int)dirtyRects[i].origin.y;
+            x2 = x1 + (int)dirtyRects[i].size.width;
+            y2 = y1 + (int)dirtyRects[i].size.height;
+
+            [self updateVNCFramebuffer:(char *)base dirty:dirtyRects[i]];
+            rfbMarkRectAsModified(self.stream->server, x1, y1, x2, y2);
+        }
 
         CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
 
-
         CFRelease(pixelBuffer);
+
+        if(rfbIsActive(self.stream->server)) {
+            rfbProcessEvents(self.stream->server,
+                             self.stream->server->deferUpdateTime * 1000);
+        }
 
         CFAbsoluteTime now;
         self.stream->fps.counter++;
@@ -114,7 +126,7 @@ typedef struct {
                                           (size_t)size.height,
                                           'BGRA', NULL, handler);*/
     streamOptions = [NSDictionary dictionaryWithObjectsAndKeys:
-                     [NSNumber numberWithFloat:1./30.],
+                     [NSNumber numberWithFloat:1./60.],
                      kCGDisplayStreamMinimumFrameTime, nil];
     cstreamOptions = (__bridge CFDictionaryRef)streamOptions;
     displayStream = CGDisplayStreamCreateWithDispatchQueue(self.displayID,
@@ -165,10 +177,9 @@ typedef struct {
     self.stream->framebuffer.size = (size_t)size.width*(size_t)size.height*4;
     *self.stream->framebuffer.buffer = malloc(self.stream->framebuffer.size);
 
+    self.stream->framebuffer.bytesPerRow = (size_t)size.width * (size_t)4;
+
     rfbInitServer(self.stream->server);
-    rfbRunEventLoop(self.stream->server,
-                    self.stream->server->deferUpdateTime*1000,
-                    1);
 }
 
 - (void)destroyVNCServer {
@@ -180,17 +191,33 @@ typedef struct {
     memset(self.stream, 0, sizeof(*(self.stream)));
 }
 
-- (void)updateVNCFramebuffer:(char *)bgra32 {
-    size_t i;
+- (void)updateVNCFramebuffer:(char *)bgra32 dirty:(CGRect)rect {
+    size_t row, minrow, maxrow, col, mincol, maxcol, i;
+    size_t bpr;
     char *dest;
 
     dest = *self.stream->framebuffer.buffer;
+    bpr = self.stream->framebuffer.bytesPerRow;
 
+    minrow = (size_t)rect.origin.y;
+    maxrow = (size_t)rect.origin.y + (size_t)rect.size.height;
+    mincol = (size_t)rect.origin.x * (size_t)4;
+    maxcol = mincol + (size_t)rect.size.width * (size_t)4;
+
+    for(row = minrow, i = 0; row < maxrow; row++) {
+        for(col = mincol; col < maxcol; col += 4, i += 4) {
+            dest[row*bpr + col] = bgra32[row*bpr + col + 2];
+            dest[row*bpr + col + 1] = bgra32[row*bpr + col + 1];
+            dest[row*bpr + col + 2] = bgra32[row*bpr + col];
+        }
+    }
+    /*
     for(i = 0; i < self.stream->framebuffer.size; i += (size_t)4) {
         dest[i] = bgra32[i+2];
         dest[i+1] = bgra32[i+1];
         dest[i+2] = bgra32[i];
         dest[i+3] = 255;
     }
+     */
 }
 @end
