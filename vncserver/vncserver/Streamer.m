@@ -29,9 +29,8 @@ typedef struct {
 @property (nonatomic, assign) CGDirectDisplayID displayID;
 
 #pragma mark Streaming
-@property (nonatomic, assign) dispatch_queue_t captureQueue;
-@property (nonatomic, retain) AVCaptureSession *captureSession;
-@property (nonatomic, retain) AVCaptureVideoDataOutput *captureOutput;
+@property (nonatomic, strong) dispatch_queue_t captureQueue;
+@property (nonatomic, assign) CGDisplayStreamRef displayStream;
 @property (nonatomic, assign) StreamerVNCStream *stream;
 @end
 
@@ -51,66 +50,101 @@ typedef struct {
 
 #pragma mark Streaming
 - (BOOL)startStreaming:(NSError **)error {
-    AVCaptureSession *session;
-    AVCaptureScreenInput *input;
-    AVCaptureVideoDataOutput *output;
+    CGSize size;
+    NSDictionary *streamOptions;
+    CFDictionaryRef cstreamOptions;
+    CGDisplayStreamRef displayStream;
+    CGDisplayStreamFrameAvailableHandler handler;
 
-    if(error) {
-        *error = nil;
-    }
+    size = CGDisplayBounds(self.displayID).size;
 
-    session = [[AVCaptureSession alloc] init];
-    [session setSessionPreset:AVCaptureSessionPresetHigh];
+    handler = ^(CGDisplayStreamFrameStatus status,
+                uint64_t displayTime,
+                IOSurfaceRef frameSurface,
+                CGDisplayStreamUpdateRef updateRef)
+    {
+        size_t count;
+        const CGRect *dirtyRects;
+        CGDisplayStreamUpdateRectType mode;
+        CVPixelBufferRef pixelBuffer;
+        CVReturn rv;
 
-    input = [[AVCaptureScreenInput alloc] initWithDisplayID:self.displayID];
-    if(!input || ![session canAddInput:input]) {
-        return NO;
-    }
-    [session addInput:input];
+        if(status != kCGDisplayStreamFrameStatusFrameComplete) {
+            return;
+        }
 
-    output = [[AVCaptureVideoDataOutput alloc] init];
-    output.alwaysDiscardsLateVideoFrames = YES;
-    output.videoSettings = [NSDictionary dictionaryWithObjectsAndKeys:
-                            [NSNumber numberWithInt:kCVPixelFormatType_32BGRA],
-                            (__bridge NSString *)kCVPixelBufferPixelFormatTypeKey,
-                            nil];
-    /*for(NSNumber *number in output.availableVideoCVPixelFormatTypes) {
-        int c = [number intValue];
-        NSLog(@"%c%c%c%c (%x)",
-              (c >> 24) & 0xFF,
-              (c >> 16) & 0xFF,
-              (c >>  8) & 0xFF,
-              (c >>  0) & 0xFF,
-              c);
-    }*/
+        mode = kCGDisplayStreamUpdateReducedDirtyRects;
+        dirtyRects = CGDisplayStreamUpdateGetRects(updateRef, mode, &count);
 
-    [self resetCaptureQueue];
-    [output setSampleBufferDelegate:self queue:self.captureQueue];
-    if(![session canAddOutput:output]) {
-        return NO;
-    }
-    [session addOutput:output];
+        rv = CVPixelBufferCreateWithIOSurface(NULL, frameSurface,
+                                              NULL, &pixelBuffer);
+        if(rv != kCVReturnSuccess) {
+            NSLog(@"%s could not create pixel buffer", __PRETTY_FUNCTION__);
+        }
 
-    self.captureSession = session;
-    self.captureOutput = output;
+
+        CVPixelBufferLockBaseAddress(pixelBuffer, 0);
+
+        memcpy(*self.stream->framebuffer.buffer,
+               CVPixelBufferGetBaseAddress(pixelBuffer),
+               self.stream->framebuffer.size);
+
+        rfbMarkRectAsModified(self.stream->server,
+                              0, 0, (int)size.width, (int)size.height);
+
+        CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
+
+
+        CFRelease(pixelBuffer);
+
+        CFAbsoluteTime now;
+        self.stream->fps.counter++;
+        if(self.stream->fps.counter == 9) {
+            now = CFAbsoluteTimeGetCurrent();
+
+            printf("fps: %f\n", 1./(now - self.stream->fps.time)*(double)self.stream->fps.counter);
+            self.stream->fps.time = CFAbsoluteTimeGetCurrent();
+            self.stream->fps.counter = 0;
+        }
+    };
+
+
+    /*displayStream = CGDisplayStreamCreate(self.displayID,
+                                          (size_t)size.width,
+                                          (size_t)size.height,
+                                          'BGRA', NULL, handler);*/
+    streamOptions = [NSDictionary dictionaryWithObjectsAndKeys:
+                     [NSNumber numberWithFloat:1./30.],
+                     kCGDisplayStreamMinimumFrameTime, nil];
+    cstreamOptions = (__bridge CFDictionaryRef)streamOptions;
+    displayStream = CGDisplayStreamCreateWithDispatchQueue(self.displayID,
+                                                           (size_t)size.width,
+                                                           (size_t)size.height,
+                                                           'BGRA',
+                                                           cstreamOptions,
+                                                           self.captureQueue,
+                                                           handler);
 
     [self setupVNCServer];
-    [session startRunning];
+
+    //runLoopSource = CGDisplayStreamGetRunLoopSource(displayStream);
+    /*CFRunLoopAddSource(CFRunLoopGetCurrent(),
+                       runLoopSource,
+                       kCFRunLoopDefaultMode);*/
+    CGDisplayStreamStart(displayStream);
 
     return YES;
 }
 
 - (void)stopStreaming {
-    [self.captureSession stopRunning];
-
-    self.captureSession = nil;
-    self.captureOutput = nil;
+    //CGDisplayStreamStop(self.displayStream);
+    CFRelease(self.displayStream);
+    self.displayStream = NULL;
 }
 
 - (void)resetCaptureQueue {
     if(self.captureQueue) {
         dispatch_suspend(self.captureQueue);
-        dispatch_release(self.captureQueue);
     }
     self.captureQueue = dispatch_queue_create("streamer.capture", NULL);
 }
@@ -132,6 +166,9 @@ typedef struct {
     *self.stream->framebuffer.buffer = malloc(self.stream->framebuffer.size);
 
     rfbInitServer(self.stream->server);
+    rfbRunEventLoop(self.stream->server,
+                    self.stream->server->deferUpdateTime*1000,
+                    1);
 }
 
 - (void)destroyVNCServer {
@@ -155,73 +192,5 @@ typedef struct {
         dest[i+2] = bgra32[i];
         dest[i+3] = 255;
     }
-}
-
-#pragma mark Output Delegate
-- (void)captureOutput:(AVCaptureOutput *)captureOutput
-didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
-       fromConnection:(AVCaptureConnection *)connectioncapture
-{
-    CVImageBufferRef imageBuffer;
-    void *base;
-    size_t bpr, width, height;
-
-    imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
-    CVPixelBufferLockBaseAddress(imageBuffer, 0);
-
-    bpr = CVPixelBufferGetBytesPerRow(imageBuffer);
-    width = CVPixelBufferGetWidth(imageBuffer);
-    height = CVPixelBufferGetHeight(imageBuffer);
-    base = CVPixelBufferGetBaseAddress(imageBuffer);
-
-    [self updateVNCFramebuffer:(char *)base];
-    rfbMarkRectAsModified(self.stream->server, 0, 0, (int)width, (int)height);
-
-    CVPixelBufferUnlockBaseAddress(imageBuffer, 0);
-
-    /* FPS */
-    CFAbsoluteTime now;
-    self.stream->fps.counter++;
-    if(self.stream->fps.counter == 9) {
-        now = CFAbsoluteTimeGetCurrent();
-
-        printf("fps: %f\n", 1./(now - self.stream->fps.time)*(double)self.stream->fps.counter);
-        self.stream->fps.time = CFAbsoluteTimeGetCurrent();
-        self.stream->fps.counter = 0;
-    }
-
-
-    if(rfbIsActive(self.stream->server)) {
-        rfbProcessEvents(self.stream->server,
-                         self.stream->server->deferUpdateTime * 1000);
-    }
-
-    /*
-    CGColorSpaceRef colorSpace;
-    CGContextRef context;
-    CGImageRef image;
-
-    colorSpace = CGColorSpaceCreateDeviceRGB();
-    context = CGBitmapContextCreate(base, width, height, 8, bpr, colorSpace,
-                                    kCGBitmapByteOrder32Little |
-                                    kCGImageAlphaNoneSkipFirst);
-    image = CGBitmapContextCreateImage(context);
-
-    CGContextRelease(context);
-    CGColorSpaceRelease(colorSpace);
-
-    NSURL *output;
-    CGImageDestinationRef dest;
-
-    output = [NSURL fileURLWithPath:
-              [NSString stringWithFormat:@"/tmp/screen-%f.png",
-               CFAbsoluteTimeGetCurrent()]];
-    dest = CGImageDestinationCreateWithURL((__bridge CFURLRef)output,
-                                           CFSTR("public.png"),
-                                           1, NULL);
-    CGImageDestinationAddImage(dest, image, NULL);
-    CGImageDestinationFinalize(dest);
-    CFRelease(dest);
-     */
 }
 @end
