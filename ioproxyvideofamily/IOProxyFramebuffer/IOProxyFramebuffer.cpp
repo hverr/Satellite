@@ -46,14 +46,14 @@ const IODisplayModeInformation gProxyDisplayModes[] = {
 //	{   w,    h,  refresh, maxDepthIndex,               flags, reserved[4]}
 	{   0,    0, 60 << 16, kDepth32Bit, kDisplayModeValidFlag},					// make things 1-based to fit in valid IODisplayModeID range 0x1..0x7fffffff
 	
-	{1920, 1200, 60 << 16, kDepth32Bit, kDisplayModeValidFlag},					// make sure the largest resolution is first, as we use that to specify how much
+//	{1920, 1200, 60 << 16, kDepth32Bit, kDisplayModeValidFlag},					// make sure the largest resolution is first, as we use that to specify how much
 																				// ram to allocate for the framebuffer
 
-	{1600, 1200, 60 << 16, kDepth32Bit, kDisplayModeValidFlag},
+//	{1600, 1200, 60 << 16, kDepth32Bit, kDisplayModeValidFlag},
 //	{1600, 1200, 75 << 16, kDepth32Bit, kDisplayModeValidFlag},
-	{1440,  900, 60 << 16, kDepth32Bit, kDisplayModeValidFlag},
-	{1280, 1024, 60 << 16, kDepth32Bit, kDisplayModeValidFlag | kDisplayModeSafeFlag | kDisplayModeDefaultFlag},
-	{1280,  854, 60 << 16, kDepth32Bit, kDisplayModeValidFlag},
+//	{1440,  900, 60 << 16, kDepth32Bit, kDisplayModeValidFlag},
+//	{1280, 1024, 60 << 16, kDepth32Bit, kDisplayModeValidFlag | kDisplayModeSafeFlag | kDisplayModeDefaultFlag},
+//	{1280,  854, 60 << 16, kDepth32Bit, kDisplayModeValidFlag},
 //	{1280, 1024, 75 << 16, kDepth32Bit, kDisplayModeNeverShowFlag},
 //	{1280, 1024, 85 << 16, kDepth32Bit, kDisplayModeNeverShowFlag},
 	{1024,  768, 60 << 16, kDepth32Bit, kDisplayModeValidFlag}

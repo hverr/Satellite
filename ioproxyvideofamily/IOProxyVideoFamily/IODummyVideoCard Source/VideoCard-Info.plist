@@ -42,18 +42,16 @@
 					<key>enabled</key>
 					<true/>
 					<key>height</key>
-					<integer>1050</integer>
+					<integer>768</integer>
 					<key>maxHeight</key>
-					<integer>1200</integer>
+					<integer>768</integer>
 					<key>maxWidth</key>
-					<integer>1920</integer>
+					<integer>1024</integer>
 					<key>name</key>
 					<string>DEG,ProxyVideoHead_A</string>
 					<key>width</key>
-					<integer>1400</integer>
+					<integer>1024</integer>
 				</dict>
-				<dict/>
-				<dict/>
 			</array>
 		</dict>
 	</dict>
