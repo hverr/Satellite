@@ -36,6 +36,8 @@
 #import "AppController.h"
 #import "UserClientCommon.h"
 
+#import <IOKit/IOKitLib.h>
+
 
 @implementation AppController
 
@@ -52,7 +54,10 @@
 --------------------------------+---------------+---------------------------- */
 -(kern_return_t)
 IOProxyVideoCardUserClientOpen {
-    kern_return_t kernResult = IOConnectMethodScalarIScalarO(dataPort, kMyUserClientOpen, 0, 0);
+    //kern_return_t kernResult = IOConnectMethodScalarIScalarO(dataPort, kMyUserClientOpen, 0, 0);
+
+    /* https://developer.apple.com/library/mac/samplecode/SimpleUserClient/Listings/SimpleUserClientInterface_c.html */
+    kern_return_t kernResult = IOConnectCallScalarMethod(dataPort, kMyUserClientOpen, NULL, 0, NULL, NULL);
     
     return kernResult;
 }
@@ -69,8 +74,8 @@ IOProxyVideoCardUserClientOpen {
 --------------------------------+---------------+---------------------------- */
 -(kern_return_t)
 IOProxyVideoCardUserClientClose {
-    kern_return_t kernResult = IOConnectMethodScalarIScalarO(dataPort, kMyUserClientClose, 0, 0);
-	
+    //kern_return_t kernResult = IOConnectMethodScalarIScalarO(dataPort, kMyUserClientClose, 0, 0);
+	kern_return_t kernResult = IOConnectCallScalarMethod(dataPort, kMyUserClientClose, NULL, 0, NULL, NULL);
     return kernResult;
 }
 
@@ -79,13 +84,23 @@ IOProxyVideoCardUserClientClose {
 IOProxyVideoCardConnectionCount {
     int					resultNumber;
     kern_return_t		kernResult;
-	
+
+    /*
     kernResult = IOConnectMethodScalarIScalarO(dataPort,						// an io_connect_t returned from IOServiceOpen().
 											   kConnectionCountMethod,			// an index to the function in the Kernel.
 											   0,								// the number of scalar input values.
 											   1,								// the number of scalar output values.
 											   &resultNumber					// a scalar output parameter.
 											   );
+     */
+    uint32_t outputCnt = 1;
+    uint64_t resultNumber64;
+    kernResult = IOConnectCallScalarMethod(dataPort,
+                                           kConnectionCountMethod,
+                                           NULL, 0,
+                                           &resultNumber64,
+                                           &outputCnt);
+    resultNumber = (int)resultNumber64;
 
 	if (kernResult == KERN_SUCCESS) {
 		[properties setValue:[NSNumber numberWithInt:resultNumber] forKey:@"connectionCount"];
@@ -105,9 +120,11 @@ IOProxyVideoCardConnectionCount {
 -(kern_return_t)
 IOProxyVideoCardConnectionPropertiesAtIndex:(int)index {
 	ConnectionStruct			connection;
-	IOByteCount					structSize		= sizeof(ConnectionStruct);
-	kern_return_t				kernResult;
-	
+	//IOByteCount					structSize		= sizeof(ConnectionStruct);
+    size_t					structSize		= sizeof(ConnectionStruct);
+    kern_return_t				kernResult;
+
+    /*
 	kernResult = IOConnectMethodScalarIStructureO(dataPort,						// an io_connect_t returned from IOServiceOpen()
 												  kConnectionPropertiesMethod,	// an index to the function in the kernel
 												  1,							// the number of scalar input values
@@ -115,6 +132,18 @@ IOProxyVideoCardConnectionPropertiesAtIndex:(int)index {
 												  index,						// a scalar input parameter
 												  &connection					// a pointer to a struct output parameter
 												  );
+    */
+    uint64_t index64 = (uint64_t)index;
+    kernResult = IOConnectCallMethod(dataPort,
+                                     kConnectionPropertiesMethod,
+                                     &index64,
+                                     1,
+                                     NULL,
+                                     0,
+                                     NULL,
+                                     NULL,
+                                     &connection,
+                                     &structSize);
 
 	if (kernResult == KERN_SUCCESS) {
 		NSLog(@"kConnectionPropertiesMethod was successful for index %d", index);
@@ -125,7 +154,7 @@ IOProxyVideoCardConnectionPropertiesAtIndex:(int)index {
 		NSMutableDictionary *connectionDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 			[NSNumber numberWithInt:index], @"index",
 			[NSNumber numberWithBool:connection.enabled], @"enabled",
-			[NSString stringWithCString:connection.name], @"name",
+			[NSString stringWithUTF8String:connection.name], @"name",
 			[NSNumber numberWithInt:connection.maxWidth], @"maxWidth",
 			[NSNumber numberWithInt:connection.maxHeight], @"maxHeight",
 			[NSNumber numberWithInt:connection.width], @"width",
@@ -150,9 +179,11 @@ IOProxyVideoCardConnectionPropertiesAtIndex:(int)index {
 --------------------------------+---------------+---------------------------- */
 -(kern_return_t)
 IOProxyVideoCardSetConnectionProperties:(ConnectionStruct)connection atIndex:(int)index {
-	IOByteCount					structSize		= sizeof(ConnectionStruct);
-	kern_return_t				kernResult;
+	//IOByteCount					structSize		= sizeof(ConnectionStruct);
+    size_t					structSize		= sizeof(ConnectionStruct);
+    kern_return_t				kernResult;
 
+    /*
 	kernResult = IOConnectMethodScalarIStructureI(dataPort,						// an io_connect_t returned from IOServiceOpen()
 												  kSetConnectionPropertiesMethod,	// an index to the function in the kernel
 												  1,							// the number of scalar input values
@@ -160,6 +191,18 @@ IOProxyVideoCardSetConnectionProperties:(ConnectionStruct)connection atIndex:(in
 												  index,						// a scalar input parameter
 												  &connection					// a pointer to a struct input parameter
 												  );
+     */
+    uint64_t index64 = (uint64_t)index;
+    kernResult = IOConnectCallMethod(dataPort,
+                                     kSetConnectionPropertiesMethod,
+                                     &index64,
+                                     1,
+                                     NULL,
+                                     0,
+                                     NULL,
+                                     NULL,
+                                     &connection,
+                                     &structSize);
 	
 	if (kernResult == KERN_SUCCESS) {
 		NSLog(@"kSetConnectionPropertiesMethod was successful");
@@ -177,7 +220,8 @@ IOProxyVideoCardSetConnectionProperties:(ConnectionStruct)connection atIndex:(in
 --------------------------------+---------------+---------------------------- */
 -(kern_return_t)
 IOProxyVideoCardApplyChanges {
-    kern_return_t kernResult = IOConnectMethodScalarIScalarO(dataPort, kApplyChangesMethod, 0, 0);
+    //kern_return_t kernResult = IOConnectMethodScalarIScalarO(dataPort, kApplyChangesMethod, 0, 0);
+    kern_return_t kernResult = IOConnectCallScalarMethod(dataPort, kApplyChangesMethod, NULL, 0, NULL, NULL);
     
 	if (kernResult != KERN_SUCCESS) {
 		NSLog(@"kApplyChangesMethod failed with error %X", kernResult);
@@ -346,7 +390,7 @@ applyButtonPressed {
 		
 		connectionStruct.enabled = [[connection objectForKey:@"enabled"] boolValue];
 		NSString *name = [connection objectForKey:@"name"];
-		[name getCString:connectionStruct.name maxLength:sizeof(connectionStruct.name)];
+		[name getCString:connectionStruct.name maxLength:sizeof(connectionStruct.name) encoding:NSUTF8StringEncoding];
 		connectionStruct.width = [[connection objectForKey:@"width"] intValue];
 		connectionStruct.height = [[connection objectForKey:@"height"] intValue];
 		
