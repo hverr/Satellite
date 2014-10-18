@@ -262,6 +262,7 @@
 				9243195519F28D66002D4F78 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		92478E7119EC38C4001050E7 /* Build configuration list for PBXProject "Satellite" */ = {
 			isa = XCConfigurationList;
