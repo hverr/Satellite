@@ -7,6 +7,18 @@
 	objects = {
 
 /* Begin PBXAggregateTarget section */
+		9243195219F28D66002D4F78 /* All */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 9243195319F28D66002D4F78 /* Build configuration list for PBXAggregateTarget "All" */;
+			buildPhases = (
+			);
+			dependencies = (
+				9243195919F28D72002D4F78 /* PBXTargetDependency */,
+				9243195719F28D6E002D4F78 /* PBXTargetDependency */,
+			);
+			name = All;
+			productName = Install;
+		};
 		92478EAE19EC3A94001050E7 /* Kexts */ = {
 			isa = PBXAggregateTarget;
 			buildConfigurationList = 92478EB319EC3A94001050E7 /* Build configuration list for PBXAggregateTarget "Kexts" */;
@@ -22,6 +34,27 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXContainerItemProxy section */
+		9243195019F28A4A002D4F78 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9243194C19F28A4A002D4F78 /* vncserver.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9216370A19ED525F007A45D7;
+			remoteInfo = vncserver;
+		};
+		9243195619F28D6E002D4F78 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 92478E6E19EC38C4001050E7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 92478EAE19EC3A94001050E7;
+			remoteInfo = Kexts;
+		};
+		9243195819F28D72002D4F78 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9243194C19F28A4A002D4F78 /* vncserver.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 9216370919ED525F007A45D7;
+			remoteInfo = vncserver;
+		};
 		92478E9019EC39CE001050E7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 92478E8919EC39CE001050E7 /* IOProxyVideoFamily.xcodeproj */;
@@ -53,16 +86,26 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9243194C19F28A4A002D4F78 /* vncserver.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = vncserver.xcodeproj; path = vncserver/vncserver.xcodeproj; sourceTree = "<group>"; };
 		92478E8919EC39CE001050E7 /* IOProxyVideoFamily.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = IOProxyVideoFamily.xcodeproj; path = ioproxyvideofamily/IOProxyVideoFamily/IOProxyVideoFamily.xcodeproj; sourceTree = "<group>"; };
 		92478EA619EC39E7001050E7 /* IOProxyFramebuffer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = IOProxyFramebuffer.xcodeproj; path = ioproxyvideofamily/IOProxyFramebuffer/IOProxyFramebuffer.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
+		9243194D19F28A4A002D4F78 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9243195119F28A4A002D4F78 /* vncserver */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		92478E6D19EC38C4001050E7 = {
 			isa = PBXGroup;
 			children = (
 				92478EA619EC39E7001050E7 /* IOProxyFramebuffer.xcodeproj */,
 				92478E8919EC39CE001050E7 /* IOProxyVideoFamily.xcodeproj */,
+				9243194C19F28A4A002D4F78 /* vncserver.xcodeproj */,
 			);
 			sourceTree = "<group>";
 		};
@@ -108,15 +151,27 @@
 					ProductGroup = 92478E8A19EC39CE001050E7 /* Products */;
 					ProjectRef = 92478E8919EC39CE001050E7 /* IOProxyVideoFamily.xcodeproj */;
 				},
+				{
+					ProductGroup = 9243194D19F28A4A002D4F78 /* Products */;
+					ProjectRef = 9243194C19F28A4A002D4F78 /* vncserver.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
 				92478EAE19EC3A94001050E7 /* Kexts */,
+				9243195219F28D66002D4F78 /* All */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		9243195119F28A4A002D4F78 /* vncserver */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = vncserver;
+			remoteRef = 9243195019F28A4A002D4F78 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		92478E9119EC39CE001050E7 /* IOProxyVideoCard.kext */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
@@ -134,6 +189,16 @@
 /* End PBXReferenceProxy section */
 
 /* Begin PBXTargetDependency section */
+		9243195719F28D6E002D4F78 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 92478EAE19EC3A94001050E7 /* Kexts */;
+			targetProxy = 9243195619F28D6E002D4F78 /* PBXContainerItemProxy */;
+		};
+		9243195919F28D72002D4F78 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = vncserver;
+			targetProxy = 9243195819F28D72002D4F78 /* PBXContainerItemProxy */;
+		};
 		92478EB519EC3AA3001050E7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = IOProxyFramebuffer;
@@ -147,6 +212,20 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		9243195419F28D66002D4F78 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		9243195519F28D66002D4F78 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		92478E7219EC38C4001050E7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -176,6 +255,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		9243195319F28D66002D4F78 /* Build configuration list for PBXAggregateTarget "All" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9243195419F28D66002D4F78 /* Debug */,
+				9243195519F28D66002D4F78 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		92478E7119EC38C4001050E7 /* Build configuration list for PBXProject "Satellite" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
