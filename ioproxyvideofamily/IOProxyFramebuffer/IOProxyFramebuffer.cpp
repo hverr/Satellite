@@ -56,7 +56,7 @@ const IODisplayModeInformation gProxyDisplayModes[] = {
 //	{1280,  854, 60 << 16, kDepth32Bit, kDisplayModeValidFlag},
 //	{1280, 1024, 75 << 16, kDepth32Bit, kDisplayModeNeverShowFlag},
 //	{1280, 1024, 85 << 16, kDepth32Bit, kDisplayModeNeverShowFlag},
-	{1024,  768, 60 << 16, kDepth32Bit, kDisplayModeValidFlag}
+	{1600,  900, 60 << 16, kDepth32Bit, kDisplayModeValidFlag}
 };
 const IOItemCount gProxyDisplayModeCount = sizeof(gProxyDisplayModes) / sizeof(IODisplayModeInformation) - 1;
 const IOIndex kLargestDisplayMode = 1;

@@ -482,26 +482,26 @@ com_doequalsglory_driver_IOProxyVideoHead::init(OSDictionary *dict) {
 	
 	OSNumber *width = OSDynamicCast(OSNumber, dict->getObject(gIODVCHeadWidthKey));
 	if (!width) {
-		setProperty(gIODVCHeadWidthKey->getCStringNoCopy(), 1024, 32);
-		IOLog("IOProxyVideoHead  width=1024 (default)\n");
+		setProperty(gIODVCHeadWidthKey->getCStringNoCopy(), 1600, 32);
+		IOLog("IOProxyVideoHead  width=1600 (default)\n");
 	}
 	
 	OSNumber *height = OSDynamicCast(OSNumber, dict->getObject(gIODVCHeadHeightKey));
 	if (!height) {
-		setProperty(gIODVCHeadHeightKey->getCStringNoCopy(), 768, 32);
-		IOLog("IOProxyVideoHead  height=768 (default)\n");
+		setProperty(gIODVCHeadHeightKey->getCStringNoCopy(), 900, 32);
+		IOLog("IOProxyVideoHead  height=900 (default)\n");
 	}
 
 	OSNumber *maxWidth = OSDynamicCast(OSNumber, dict->getObject(gIODVCHeadMaxWidthKey));
 	if (!maxWidth) {
-		setProperty(gIODVCHeadMaxWidthKey->getCStringNoCopy(), 1024, 32);
-		IOLog("IOProxyVideoHead  maxWidth=1024 (default)\n");
+		setProperty(gIODVCHeadMaxWidthKey->getCStringNoCopy(), 1600, 32);
+		IOLog("IOProxyVideoHead  maxWidth=1600 (default)\n");
 	}
 	
 	OSNumber *maxHeight = OSDynamicCast(OSNumber, dict->getObject(gIODVCHeadMaxHeightKey));
 	if (!maxHeight) {
-		setProperty(gIODVCHeadMaxHeightKey->getCStringNoCopy(), 768, 32);
-		IOLog("IOProxyVideoHead  maxHeight=768 (default)\n");
+		setProperty(gIODVCHeadMaxHeightKey->getCStringNoCopy(), 900, 32);
+		IOLog("IOProxyVideoHead  maxHeight=900 (default)\n");
 	}
 	
 	setProperty("compatible", "proxyVideoHead");								// a property for the framebuffer to match on
